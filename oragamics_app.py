@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 
 st.set_page_config(page_title="Oragamics", page_icon="🦢", layout="centered")
 
@@ -24,24 +25,39 @@ st.markdown(
 # ---------------------------------------------------------------------------
 # Settings
 # ---------------------------------------------------------------------------
-HOLIDAY_DISCOUNT = 0.10   # 10% off selected items
+# Deals start at midnight on Nov 23 in New York time. The countdown uses this
+# exact moment, so each visitor sees it in their own local time zone.
+DEALS_START_ISO = "2026-11-23T00:00:00-05:00"
+HOLIDAY_DISCOUNT = 0.10   # 10% off selected items (none on sale yet)
 RUSH_FEE = 10             # cents per item for next-day readiness
 MAKERS = ["Aanya", "Aarav", "Kavin", "Chase"]
 
 # Prices are in cents. Set "holiday": True on the items on holiday deal.
 PRODUCTS = [
-    {"name": "High Quality Paper Airplane", "price": 40, "emoji": "✈️"},
-    {"name": "Flappy Swan", "price": 20, "emoji": "🦢"},
-    {"name": "Med Claws", "price": 25, "emoji": "🦀"},
-    {"name": "Awesome Dragon Claws", "price": 60, "emoji": "🐉"},
-    {"name": "Small Slinky", "price": 50, "emoji": "🌀"},
-    {"name": "Big Slinky", "price": 100, "emoji": "🌀"},
-    {"name": "Kaleidoscope", "price": 75, "emoji": "🔺"},
-    {"name": "Fortune Tellers", "price": 25, "emoji": "🔮"},
-    {"name": "Paper Bound Book (we supply paper)", "price": 200, "emoji": "📓"},
-    {"name": "Paper Bound Book (you provide paper)", "price": 100, "emoji": "📓"},
-    {"name": "Gift Envelopes", "price": 100, "emoji": "✉️"},
-    {"name": "Bookmarks", "price": 10, "emoji": "🔖"},
+    {"name": "High Quality Paper Airplane", "price": 40, "emoji": "✈️",
+     "desc": "Sleek, sturdy, and built to glide."},
+    {"name": "Flappy Swan", "price": 20, "emoji": "🦢",
+     "desc": "Flap the wings and watch it go."},
+    {"name": "Med Claws", "price": 25, "emoji": "🦀",
+     "desc": "A classic claw fidget."},
+    {"name": "Awesome Dragon Claws", "price": 60, "emoji": "🐉",
+     "desc": "Our best claw. Snaps and clicks."},
+    {"name": "Small Slinky", "price": 50, "emoji": "🌀",
+     "desc": "Tumbles down stairs, fidgets in hand."},
+    {"name": "Big Slinky", "price": 100, "emoji": "🌀",
+     "desc": "The full-size classic."},
+    {"name": "Kaleidoscope", "price": 75, "emoji": "🔺",
+     "desc": "Turn it and see a new pattern."},
+    {"name": "Fortune Tellers", "price": 25, "emoji": "🔮",
+     "desc": "Pick a color, pick a number, see your future."},
+    {"name": "Paper Bound Book (we supply paper)", "price": 200, "emoji": "📓",
+     "desc": "Hand-bound book."},
+    {"name": "Paper Bound Book (you provide paper)", "price": 100, "emoji": "📓",
+     "desc": "Bring your own paper and pay less."},
+    {"name": "Gift Envelopes", "price": 100, "emoji": "✉️",
+     "desc": "Handmade envelopes for your gifts."},
+    {"name": "Bookmarks", "price": 10, "emoji": "🔖",
+     "desc": "Small, cheap, and handy."},
 ]
 
 
@@ -58,6 +74,45 @@ def unit_price(product: dict) -> int:
     return price
 
 
+def countdown(target_iso: str) -> None:
+    # Runs in the visitor's browser, so times show in their local time zone.
+    components.html(
+        f"""
+        <div style="font-family: sans-serif; color: #222;">
+          <div id="cd" style="font-size: 1.3rem; font-weight: 600;"></div>
+          <div id="start" style="font-size: 0.9rem; opacity: 0.8; margin-top: 4px;"></div>
+        </div>
+        <script>
+          const target = new Date("{target_iso}");
+          document.getElementById("start").textContent =
+            "Starts " + target.toLocaleString(undefined, {{
+              dateStyle: "full", timeStyle: "short"
+            }}) + " your time";
+
+          function tick() {{
+            const diff = target - new Date();
+            const el = document.getElementById("cd");
+            if (diff <= 0) {{
+              el.textContent = "🎉 Deals are live!";
+              return;
+            }}
+            const s = Math.floor(diff / 1000);
+            const d = Math.floor(s / 86400);
+            const h = Math.floor((s % 86400) / 3600);
+            const m = Math.floor((s % 3600) / 60);
+            const sec = s % 60;
+            const pad = (n) => String(n).padStart(2, "0");
+            el.textContent = "⏳ " + d + "d " + pad(h) + "h " + pad(m) +
+              "m " + pad(sec) + "s until deals start";
+          }}
+          tick();
+          setInterval(tick, 1000);
+        </script>
+        """,
+        height=90,
+    )
+
+
 # ---------------------------------------------------------------------------
 # Page
 # ---------------------------------------------------------------------------
@@ -70,6 +125,7 @@ st.markdown(
 
 st.success("🎄 **Holiday deals: 10% off selected items!**")
 st.caption("Deals start 23 of November.")
+countdown(DEALS_START_ISO)
 
 st.markdown("### Meet the makers")
 st.write(", ".join(MAKERS[:-1]) + f", or {MAKERS[-1]} to buy.")
@@ -88,6 +144,6 @@ for p in PRODUCTS:
     price_text = cents(unit_price(p))
     if p.get("holiday"):
         price_text += " 🎄"
-    st.write(f"{p['emoji']} **{p['name']}** — {price_text}")
-st.caption("Paper Bound Book is $1 if you provide the paper. 🎄 = holiday deal.")
+    st.markdown(f"{p['emoji']} **{p['name']}** — {price_text}  \n*{p['desc']}*")
+st.caption("Paper Bound Book is $1 if you provide the paper.")
 st.caption("Tax is 5% for all items.")
