@@ -14,7 +14,7 @@ PRODUCTS = [
     {"name": "High Quality Paper Airplane", "price": 40, "emoji": "✈️"},
     {"name": "Flappy Swan", "price": 20, "emoji": "🦢"},
     {"name": "Med Claws", "price": 25, "emoji": "🦀"},
-    {"name": "Awesome Dragon Claws", "price": 60, "emoji": "🐉", "holiday": True},
+    {"name": "Awesome Dragon Claws", "price": 60, "emoji": "🐉"},
     {"name": "Small Slinky", "price": 50, "emoji": "🌀"},
     {"name": "Big Slinky", "price": 100, "emoji": "🌀", "holiday": True},
     {"name": "Kaleidoscope", "price": 75, "emoji": "🔺", "holiday": True},
