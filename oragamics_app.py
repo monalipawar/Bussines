@@ -56,7 +56,9 @@ st.markdown("### How ordering works")
 st.write(
     "**Write down your order and hand it to one of the makers.**\n\n"
     "- Items are ready **next day** if you pay an extra **10c** per item.\n"
-    "- Otherwise, the item will be ready in **2–5 days**."
+    "- Otherwise, the item will be ready in **2–5 days**.\n"
+    "- Any item **$1 or above** will be ready in **2 days** unless you pay **20c**. "
+    "Then it will still be **next day**."
 )
 
 st.markdown("### Our paper fidgets")
