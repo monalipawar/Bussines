@@ -50,6 +50,7 @@ st.markdown(
 )
 
 st.success("🎄 **Holiday deals: 10% off selected items!**")
+st.caption("Deals start 23 of November.")
 
 st.markdown("### Meet the makers")
 st.write(", ".join(MAKERS[:-1]) + f", or {MAKERS[-1]} to buy.")
