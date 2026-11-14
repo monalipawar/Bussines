@@ -2,6 +2,25 @@ import streamlit as st
 
 st.set_page_config(page_title="Oragamics", page_icon="🦢", layout="centered")
 
+# Rainbow theme
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background: linear-gradient(135deg, #ffd6d6, #ffe9c7, #fff9c4,
+                                    #d6f5d6, #c7ecff, #d9d1ff, #f5d1ff);
+    }
+    h1, h3 {
+        background: linear-gradient(90deg, #ff0000, #ff8c00, #e6c200,
+                                    #00b050, #0070c0, #7030a0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 # ---------------------------------------------------------------------------
 # Settings
 # ---------------------------------------------------------------------------
