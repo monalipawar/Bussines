@@ -70,3 +70,4 @@ for p in PRODUCTS:
         price_text += " 🎄"
     st.write(f"{p['emoji']} **{p['name']}** — {price_text}")
 st.caption("Paper Bound Book is $1 if you provide the paper. 🎄 = holiday deal.")
+st.caption("Tax is 5% for all items.")
