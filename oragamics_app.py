@@ -16,10 +16,10 @@ PRODUCTS = [
     {"name": "Med Claws", "price": 25, "emoji": "🦀"},
     {"name": "Awesome Dragon Claws", "price": 60, "emoji": "🐉"},
     {"name": "Small Slinky", "price": 50, "emoji": "🌀"},
-    {"name": "Big Slinky", "price": 100, "emoji": "🌀", "holiday": True},
-    {"name": "Kaleidoscope", "price": 75, "emoji": "🔺", "holiday": True},
+    {"name": "Big Slinky", "price": 100, "emoji": "🌀"},
+    {"name": "Kaleidoscope", "price": 75, "emoji": "🔺"},
     {"name": "Fortune Tellers", "price": 25, "emoji": "🔮"},
-    {"name": "Paper Bound Book (we supply paper)", "price": 200, "emoji": "📓", "holiday": True},
+    {"name": "Paper Bound Book (we supply paper)", "price": 200, "emoji": "📓"},
     {"name": "Paper Bound Book (you provide paper)", "price": 100, "emoji": "📓"},
     {"name": "Gift Envelopes", "price": 100, "emoji": "✉️"},
     {"name": "Bookmarks", "price": 10, "emoji": "🔖"},
@@ -27,6 +27,8 @@ PRODUCTS = [
 
 
 def cents(value: int) -> str:
+    if value < 100:
+        return f"{value}c"
     return f"${value / 100:.2f}"
 
 
